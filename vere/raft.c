@@ -1691,12 +1691,16 @@ _raft_kick_all(u3_noun vir)
   }
 }
 
+
+static u3_noun _do_print = c3n;
+#define _mem(a) if(_(_do_print)){(a);}
+#define _memn(a) if(_(_do_print)){(a);} else {fprintf(stderr,"\r\n");}
 /* _raft_spac(): print n spaces.
 */
 void _raft_spac(c3_w n)
 {
   for (; n > 0; n--)
-    (fprintf(stderr," "));
+    _mem(fprintf(stderr," "));
 }
 
 /* _raft_print_memory: print memory amount. cf u3a_print_memory().
@@ -1711,17 +1715,17 @@ _raft_print_memory(c3_w wor_w)
   c3_w bib_w = (byt_w % 1000);
 
   if ( gib_w ) {
-    (fprintf(stderr, "GB/%d.%03d.%03d.%03d\r\n", 
+    _mem(fprintf(stderr, "GB/%d.%03d.%03d.%03d\r\n",
         gib_w, mib_w, kib_w, bib_w));
   }
   else if ( mib_w ) {
-    (fprintf(stderr, "MB/%d.%03d.%03d\r\n", mib_w, kib_w, bib_w));
+    _mem(fprintf(stderr, "MB/%d.%03d.%03d\r\n", mib_w, kib_w, bib_w));
   }
   else if ( kib_w ) {
-    (fprintf(stderr, "KB/%d.%03d\r\n", kib_w, bib_w));
+    _mem(fprintf(stderr, "KB/%d.%03d\r\n", kib_w, bib_w));
   }
   else {
-    (fprintf(stderr, "B/%d\r\n", bib_w));
+    _mem(fprintf(stderr, "B/%d\r\n", bib_w));
   }
 }
 
@@ -1761,6 +1765,7 @@ _raft_prof_noun(u3p(u3h_root) hax, u3_noun non, c3_t dud)
 }
 #endif
 
+#define c3_term(a) c3_s4(a[0],a[1],a[2],a[3])
 /* _raft_prof(): print memory profile. RETAIN.
 */
 c3_w
@@ -1781,16 +1786,20 @@ _raft_prof(u3p(u3h_root) hax, c3_w den, u3_noun mas)
     return tot_w;
   }
   else {
+    u3_noun in_term = c3o(_do_print, __(h_mas == c3_term("ford")));
+    _do_print = in_term;
+    
     _raft_spac(den);
-
+    
     c3_c* lab_c = u3m_pretty(h_mas);
-    (fprintf(stderr, "%s: ", lab_c));
+    _mem(fprintf(stderr, "%s: ", lab_c));
+
     free(lab_c);
 
     u3_noun it_mas, tt_mas;
 
     if ( c3n == u3r_cell(t_mas, &it_mas, &tt_mas) ) {
-      (fprintf(stderr, "mistyped mass tail\r\n"));
+      fprintf(stderr, "mistyped mass tail\r\n");
       return tot_w;
     }
     else if ( c3y == it_mas ) {
@@ -1827,15 +1836,17 @@ _raft_prof(u3p(u3h_root) hax, c3_w den, u3_noun mas)
       return tot_w;
     }
     else if ( c3n == it_mas ) {
-      (fprintf(stderr, "\r\n"));
+      _mem(fprintf(stderr, "\r\n"));
 
       while ( _(u3du(tt_mas)) ) {
         tot_w += _raft_prof(hax, den+2, u3h(tt_mas));
+        _do_print = in_term;
+
         tt_mas = u3t(tt_mas);
       }
 
       _raft_spac(den);
-      (fprintf(stderr, "--"));
+      _mem(fprintf(stderr, "--"));
       _raft_print_memory(tot_w);
 
       return tot_w;
@@ -1861,68 +1872,71 @@ _raft_grab(u3_noun ova)
 
     c3_assert( u3R == &(u3H->rod_u) );
 
+
     fprintf(stderr, "\r\n");
     usr_w = _raft_prof(u3_nul, 0, u3A->sac);
-    fprintf(stderr, "total userspace: ");
-    _raft_print_memory(usr_w);
-
+    
+    //fprintf(stderr, "total userspace: ");
+    //_raft_print_memory(usr_w);
+    
     ova_w = u3a_mark_noun(ova);
-    fprintf(stderr, "effects list: ");
-    _raft_print_memory(ova_w);
+    //fprintf(stderr, "effects list: ");
+    //_raft_print_memory(ova_w);
 
     sac_w = u3a_mark_noun(u3A->sac);
-    fprintf(stderr, "space profile: ");
-    _raft_print_memory(sac_w);
+    //fprintf(stderr, "space profile: ");
+    //_raft_print_memory(sac_w);
 
     utv_w = u3v_mark();
-    fprintf(stderr, "arvo stuff: ");
-    _raft_print_memory(utv_w);
+    //fprintf(stderr, "arvo stuff: ");
+    //_raft_print_memory(utv_w);
 
     har_w = u3h_mark(u3R->jed.har_p);
-    fprintf(stderr, "  warm jet state: ");
-    _raft_print_memory(har_w);
+    //fprintf(stderr, "  warm jet state: ");
+    //_raft_print_memory(har_w);
 
     das_w = u3a_mark_noun(u3R->jed.das);
-    fprintf(stderr, "  cold jet state: ");
-    _raft_print_memory(das_w);
+    //fprintf(stderr, "  cold jet state: ");
+    //_raft_print_memory(das_w);
 
     gul_w = u3a_mark_noun(u3R->ski.gul);
-    fprintf(stderr, "  namespace: ");
-    _raft_print_memory(gul_w);
+    //fprintf(stderr, "  namespace: ");
+    //_raft_print_memory(gul_w);
 
     tax_w = u3a_mark_noun(u3R->bug.tax);
-    fprintf(stderr, "  trace stack list: ");
-    _raft_print_memory(tax_w);
+    //fprintf(stderr, "  trace stack list: ");
+    //_raft_print_memory(tax_w);
      
     mer_w = u3a_mark_noun(u3R->bug.mer);
-    fprintf(stderr, "  trace stack buffer: ");
-    _raft_print_memory(mer_w);
+    //fprintf(stderr, "  trace stack buffer: ");
+    //_raft_print_memory(mer_w);
      
     don_w = u3a_mark_noun(u3R->pro.don);
-    fprintf(stderr, "  profile battery list: ");
-    _raft_print_memory(don_w);
+    //fprintf(stderr, "  profile battery list: ");
+    //_raft_print_memory(don_w);
      
     day_w = u3a_mark_noun(u3R->pro.day);
-    fprintf(stderr, "  profile doss: ");
-    _raft_print_memory(day_w);
+    //fprintf(stderr, "  profile doss: ");
+    //_raft_print_memory(day_w);
      
     car_w = u3h_mark(u3R->cax.har_p);
-    fprintf(stderr, "  memoization: ");
-    _raft_print_memory(car_w);
+    //fprintf(stderr, "  memoization: ");
+    //_raft_print_memory(car_w);
      
     utm_w = har_w + das_w + gul_w + tax_w + mer_w + don_w + day_w + car_w;
-    fprintf(stderr, "total road stuff: ");
-    _raft_print_memory(utm_w);
+    //fprintf(stderr, "total road stuff: ");
+    //_raft_print_memory(utm_w);
 
-    fprintf(stderr, "total marked: ");
-    _raft_print_memory(usr_w + ova_w + sac_w + utv_w + utm_w);
+    //fprintf(stderr, "total marked: ");
+    //_raft_print_memory(usr_w + ova_w + sac_w + utv_w + utm_w);
 
     wep_w = u3a_sweep();
-    fprintf(stderr, "sweep: ");
-    _raft_print_memory(wep_w);
+    //fprintf(stderr, "sweep: ");
+    //_raft_print_memory(wep_w);
 
     u3h_free(u3R->cax.har_p);
     u3R->cax.har_p = u3h_new();
+   
 
     u3z(u3A->sac);
     u3A->sac = u3_nul;
