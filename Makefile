@@ -103,9 +103,9 @@ LIBUV_CONFIGURE_OPTIONS=
 endif
 
 # NOTFORCHECKIN - restore -O3
-# 	-DGHETTO \
 #   -DHUSH
 CFLAGS= $(COSFLAGS) $(DEBUGFLAGS) -ffast-math \
+ 	-DGHETTO \
 	-funsigned-char \
 	-I/usr/local/include \
 	$(OPTLOCALINC) \

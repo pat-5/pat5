@@ -44,16 +44,23 @@ void
 u3t_slog(u3_noun hod)
 {
 #ifdef GHETTO
+#define T_ANSI(x) "\x1b[" x "m"
+#define T_color T_ANSI("3%d")
+#define T_reset T_ANSI("0")
+  
   static int old;
   static struct timeval b4, f2, d0;
   c3_w ms_w;
+  c3_w clr_w;
           
   if ( old ) {
     gettimeofday(&f2, 0); 
     timersub(&f2, &b4, &d0);
     ms_w = (d0.tv_sec * 1000) + (d0.tv_usec / 1000);
     if (ms_w > 10) {
-      printf("%6d.%02dms ", ms_w, (int) (d0.tv_usec % 1000) / 10);
+      clr_w = ms_w > 1000 ? 1 : ms_w < 100 ? 2 : 3; //  red, green, yellow
+      printf(T_color "%6d.%02dms " T_reset,
+               clr_w, ms_w, (int) (d0.tv_usec % 1000) / 10);
       gettimeofday(&b4, 0);
     }
     else {

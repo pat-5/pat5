@@ -1574,6 +1574,9 @@ _raft_punk(u3_noun ovo)
   gon = u3m_soft(sec_w, u3v_poke, u3k(ovo));
 
 #ifdef GHETTO
+#define T_ANSI(x) "\x1b[" x "m"
+#define T_color T_ANSI("3%d")
+#define T_reset T_ANSI("0")
   c3_w ms_w;
   c3_w clr_w;
 
@@ -1582,8 +1585,8 @@ _raft_punk(u3_noun ovo)
   ms_w = (d0.tv_sec * 1000) + (d0.tv_usec / 1000);
   clr_w = ms_w > 1000 ? 1 : ms_w < 100 ? 2 : 3; //  red, green, yellow
   if(c3__belt != u3h(u3t(ovo)) || clr_w != 2){
-    uL(fprintf(uH, "\x1b[3%dm%%punk %s %4d.%02dms\x1b[0m\n",
-                       clr_w, txt_c, ms_w, (int) (d0.tv_usec % 1000) / 10));
+    uL(fprintf(uH, T_color "%%punk %s %4d.%02dms" T_reset "\n",
+                      clr_w, txt_c, ms_w, (int) (d0.tv_usec % 1000) / 10));
   }
   free(txt_c);
 #endif
