@@ -37,7 +37,7 @@ static        void _tel_opt(telnet_nvt*, telnet_byte, telnet_telopt_event*);
 #define _T_CTIM 3    //  suppress GA/char-at-a-time
 #define _T_NAWS 31   //  negotiate about window size
 
-#define _SPIN_COOL_US 500000  //  spinner activation delay when cool
+#define _SPIN_COOL_US 50000  //  spinner activation delay when cool
 #define _SPIN_WARM_US 50000   //  spinner activation delay when warm
 #define _SPIN_RATE_US 250000  //  spinner rate (microseconds/frame)
 #define _SPIN_IDLE_US 500000  //  spinner cools down if stopped this long
