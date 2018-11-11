@@ -1,0 +1,34 @@
+language: node_js
+node_js:
+- 4
+before_install:
+- cd .travis
+- wget -i pin-urbit-release.url -O ./urbit.deb
+- sudo apt install ./urbit.deb
+before_script: bash get-or-build-pill.sh
+# https://github.com/travis-ci/travis-ci/issues/2570
+before_deploy: "[ -d piers ] || { mkdir piers && tar cvzSf piers/zod-$TRAVIS_COMMIT.tgz zod/; }"
+deploy:
+  - skip_cleanup: true
+    provider: gcs
+    access_key_id: GOOGTADOPP55X5ZTH3IKAXQW
+    secret_access_key:
+      secure: lALZvAW22oBMCXafvDOkqKDkdP0K8bGKlSb6uhh54z+2bJu49+5vrfxgA9YLcExGiz8uFttzNYhEoAQEjb96DPHAHvH2iJrwieKltrWM4hLkGuSHVSCBIIm+Qe4BVRSVJPQ1rtO1ausNr0XuzO6BVnKY7NCrz8la2XNjm5+miQdtrJUnrfy2JsM/c/Bkwjj3Tc4op9Ne+7Xzc9DI6LB97XiJx5PgeOx1WeZi9IKQ3IhPBHBzBpBrJ4lWxb4PFvDUqNzSk1wuMGy/sH73IFhGcz3CZRZYbeICDdwmHcUnkdPxG6+RLH+YLhSxx175R+HdaARRQvRANxvY9KNJ11NKmV3Rs9q7fZgWZbrptuB0CDMhfZ/Aiz9tgHGV0UVhYHb8n614fDIKzpXwIy5DPjCKpxPoZRVzABQcdzPTvxnZtZDbarsfdfq0vh9xXNPLGuFYZQnZ6iEpv17qp/2TbeCBSMKIxwIG3LQTwr0a4wKL1T/YIZm6oiN6NycHhMHaczQIRANKw9e7oqbgnXu/WnqHIxyTY2CCvzVOgipRmKKa7jz7CcSoP883XZ9o7WAOnfJY+T4ofpdkzHn1ElNXPjDPpX7CUkowNFH4DZk2Ljwe0CgxPOF6ygnsNrqqs4XoNQaBnHGXMq20Upg6OK9MBmZibtlX9STCeSAt4WudekpEOPU=
+    bucket: ci-piers.urbit.org
+    local-dir: piers/
+    acl: public-read
+    on:
+      repo: urbit/arvo
+      all_branches: true
+  - skip_cleanup: true
+    provider: gcs
+    access_key_id: GOOGTADOPP55X5ZTH3IKAXQW
+    secret_access_key:
+      secure: lALZvAW22oBMCXafvDOkqKDkdP0K8bGKlSb6uhh54z+2bJu49+5vrfxgA9YLcExGiz8uFttzNYhEoAQEjb96DPHAHvH2iJrwieKltrWM4hLkGuSHVSCBIIm+Qe4BVRSVJPQ1rtO1ausNr0XuzO6BVnKY7NCrz8la2XNjm5+miQdtrJUnrfy2JsM/c/Bkwjj3Tc4op9Ne+7Xzc9DI6LB97XiJx5PgeOx1WeZi9IKQ3IhPBHBzBpBrJ4lWxb4PFvDUqNzSk1wuMGy/sH73IFhGcz3CZRZYbeICDdwmHcUnkdPxG6+RLH+YLhSxx175R+HdaARRQvRANxvY9KNJ11NKmV3Rs9q7fZgWZbrptuB0CDMhfZ/Aiz9tgHGV0UVhYHb8n614fDIKzpXwIy5DPjCKpxPoZRVzABQcdzPTvxnZtZDbarsfdfq0vh9xXNPLGuFYZQnZ6iEpv17qp/2TbeCBSMKIxwIG3LQTwr0a4wKL1T/YIZm6oiN6NycHhMHaczQIRANKw9e7oqbgnXu/WnqHIxyTY2CCvzVOgipRmKKa7jz7CcSoP883XZ9o7WAOnfJY+T4ofpdkzHn1ElNXPjDPpX7CUkowNFH4DZk2Ljwe0CgxPOF6ygnsNrqqs4XoNQaBnHGXMq20Upg6OK9MBmZibtlX9STCeSAt4WudekpEOPU=
+    bucket: bootstrap.urbit.org
+    local-dir: built-pill/
+    acl: public-read
+    on:
+      condition: "-d built-pill/"
+      repo: urbit/arvo
+      all_branches: true
