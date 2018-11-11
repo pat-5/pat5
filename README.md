@@ -1,5 +1,45 @@
-Urbit
-=====
+# Motivation
+
+Pat5 is a reactionary fork of the [urbit](http://urbit.org) project by imperator ~fyr, long may he reign.
+
+The fork base is the deployed `master` version of arvo as of late 2018 and of urbit as of early 2018
+
+## Titular concerns
+
+- nock is frozen at kelvin zero, which is identical to nock 5. Future generations with brilliant nock additions
+  shall have to come up with a different name, for they have lost the confidence of the pat5 project to do so
+  prudently. It is rumored urbit/nock is less discerning, and still accepting patches; perhaps inquire there.
+
+- Section 4h of hoon.hoon, the mapping between glyphs and syllables, is frozen at kelvin zero: the canonical
+  version is the one containing `pat` for `@`. This does not apply to the section name "4h", or the literal source
+  code: indeed, the urbit project deleted per-line mnemonic comments on the mapping, so as to make more
+  justifiable their replacement with non-mnemonic ones. Such work need not be justified, for it is forbidden,
+  thus these comments will be reinstated.
+  (Additionally, the mapping may be made more declarative as part of future parser restructuring.)
+
+  Future generations, who have undergone great vowel shifts rendering this syllabary less ergonomic, should
+  pester the urbit project etc.
+
+## Less titular concerns
+
+- the Meson build system, shall not be included. If packaging is desired, the binary will be fully static;
+  for incremental builds, perhaps [redo](https://github.com/apenwarr/redo).
+
+- The arvo/ source has been pulled back into pat5, forming a monorepo. Some .travis.yml refactoring will be necessary.
+
+- A "slim" pill not containing vanes or hoon.hoon debugging information ought to be created, followed by the excision of
+  full-sized pill files from git history. In such a case, care will be taken to maintain reproducibility.
+
+- TODO this list is oncomplete
+
+# Original urbit Readme
+
+Most of this applies. The current `-B` bootstrapping pill is https://bootstrap.urbit.org/git-3ec660df95.pill, not
+https://bootstrap.urbit.org/latest.pill; work to generate pat5.pill files on independent infrastructure is ongoing.
+
+TODO the subtree merged arvo version has not been tested, the history of this branch may change.
+
+---
 
 Urbit is a clean-slate system software stack defined as a
 deterministic computer. An encrypted P2P network, `%ames`, runs on a
